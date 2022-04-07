@@ -2,20 +2,25 @@
 import WeekCalendar from "../components/Calendar.vue";
 </script>
 <template>
-  <h1>Hi this is Calendars</h1>
   <WeekCalendar
     :events="[
       {
-        startDate: '2022-03-23T09:00:00.000+02:00',
-        endDate: '2022-03-23T11:00:00.000+02:00',
-        name: 'aaaa',
-        place: '14ss',
+        startDate: '2022-04-12T09:20:00.000+03:00',
+        endDate: '2022-04-12T11:30:00.000+03:00',
+        name: 'Pirmo sprinto retrospektyva',
+        place: 'XI rūmai, 519 auditorija',
       },
       {
-        startDate: '2022-03-24T10:30:00.000+02:00',
-        endDate: '2022-03-24T13:10:00.000+02:00',
-        name: 'akds',
-        place: '42ss',
+        startDate: '2022-04-13T12:00:00.000+03:00',
+        endDate: '2022-04-13T12:25:00.000+03:00',
+        name: 'Stand-upas',
+        place: 'XI rūmai, 519 auditorija',
+      },
+      {
+        startDate: '2022-04-13T14:00:00.000+03:00',
+        endDate: '2022-04-13T14:40:00.000+03:00',
+        name: 'Stand-upas',
+        place: 'X rūmai, 320 auditorija',
       },
     ]"
   />
