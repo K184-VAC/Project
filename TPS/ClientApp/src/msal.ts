@@ -11,11 +11,13 @@ const RequestedScopes = [
 ];
 
 type StateChangeCallback = () => void;
+type ReadyCallback = () => void;
 
 interface MsalStateObject {
   msal?: msal.PublicClientApplication | null;
   clientId: string | null;
   stateChangeCallbacks: StateChangeCallback[];
+  readyCallbacks: ReadyCallback[];
   isLoggedIn: boolean;
   accessToken: string | null;
   idToken: string | null;
@@ -29,6 +31,7 @@ const msalState: MsalStateObject = {
   msal: null,
   clientId: null, // 5931fda0-e9e0-4754-80c2-18bcb9d9561a
   stateChangeCallbacks: [],
+  readyCallbacks: [],
 
   isLoggedIn: false,
   accessToken: null,
@@ -153,6 +156,18 @@ function __isAccountAceptable(account: msal.AccountInfo) {
 
 function __stateChanged() {
   msalState.stateChangeCallbacks.forEach((cb) => cb());
+  if (hasTokens()) {
+    msalState.readyCallbacks.forEach((cb) => cb());
+    msalState.readyCallbacks = [];
+  }
+}
+
+export function hasTokens(): boolean {
+  return !!(msalState.accessToken && msalState.idToken);
+}
+
+export function registerReadyCallback(callback: ReadyCallback) {
+  msalState.readyCallbacks.push(callback);
 }
 
 async function __loadAuthParameters() {
@@ -172,6 +187,14 @@ async function __loadAuthParametersLocalStorage() {
 async function __fetchAuthParameters() {
   var response = await fetch("/api/AuthMetadata");
   msalState.clientId = (await response.json()).clientId;
+}
+
+export async function waitTillReady(): Promise<void> {
+  if (!hasTokens()) {
+    await new Promise((c) => {
+      registerReadyCallback(c as ReadyCallback);
+    });
+  }
 }
 
 initializeMSAL();

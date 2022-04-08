@@ -10,7 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.MetadataAddress = "https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration";
+        Configuration.Bind("AzureAd", options);
     });
 builder.Services.AddAuthorization((options) =>
 {
