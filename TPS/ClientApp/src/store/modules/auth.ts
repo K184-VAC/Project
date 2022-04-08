@@ -1,4 +1,5 @@
 import { createVuexModule } from "vuex-typed-modules";
+import { login } from "../../http/LoginController";
 import { GetMsalState, WatchMsalState } from "../../msal";
 
 interface AuthModuleState {
@@ -28,8 +29,7 @@ export const [authModule, useAuthModule] = createVuexModule({
     initialize({ commit }) {
       WatchMsalState(async () => {
         const state = GetMsalState();
-        let isAdmin = false;
-        commit("setState", { ...state, isAdmin });
+        commit("setState", { ...state });
       });
     },
     async waitTillReady({ commit, state }) {
@@ -47,9 +47,10 @@ export const [authModule, useAuthModule] = createVuexModule({
       state.idToken = msalState.idToken;
       state.email = msalState.email;
       state.displayName = msalState.displayName;
-      if (!state.isReady && state.idToken) {
+      if (!state.isReady && state.idToken && state.accessToken) {
         state.isReady = true;
         state.onReady.forEach((c) => c());
+        login();
       }
     },
     addReadyCalback(state, callback: () => void) {
