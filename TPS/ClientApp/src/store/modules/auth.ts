@@ -1,3 +1,5 @@
+// TODO: Rewrite me
+
 import { createVuexModule } from "vuex-typed-modules";
 import { login } from "../../http/LoginController";
 import { GetMsalState, WatchMsalState } from "../../msal";
