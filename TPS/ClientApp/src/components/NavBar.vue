@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import { Collapse } from "bootstrap";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, toRefs } from "vue";
 import { LoginMsal, LogoutMsal } from "../msal";
+import { useAuthStore } from "../store/modules/auth";
 
 const navBarRef = ref<HTMLElement | null>(null);
 const collapse = ref<Collapse | null>(null);
+
+const authStore = useAuthStore();
+const { isLoggedIn, displayName } = toRefs(authStore.state);
 
 onMounted(() => {
   navBarRef.value;
@@ -47,8 +51,8 @@ onMounted(() => {
           </li>
         </ul>
         <div class="navbar-nav">
-          <template v-if="false">
-            <span class="navbar-text">Prisijungta kaip {{ false }} </span>
+          <template v-if="isLoggedIn">
+            <span class="navbar-text">Prisijungta kaip {{ displayName }} </span>
             <div class="nav-item">
               <a href="#" @click="LogoutMsal" class="nav-link">Atsijungti</a>
             </div>
