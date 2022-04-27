@@ -1,6 +1,8 @@
 ﻿<script setup lang="ts">
+import { createTemplateLiteral } from "@vue/compiler-core";
 import { reactive } from "vue";
 import TeamForm from "../components/forms/TeamForm.vue";
+import { createTeam } from "../http/TeamController";
 import { TeamValue } from "../types/Team";
 
 const teamValue = reactive<TeamValue>({
@@ -8,8 +10,12 @@ const teamValue = reactive<TeamValue>({
   description: "",
 });
 
-function doPreset() {
-  (teamValue.description = "Tai testas"), (teamValue.name = "K184 VAC");
+async function create() {
+  try {
+    await createTeam(teamValue);
+  } catch (error) {
+    alert(`Įvyko klaida: ${error}`);
+  }
 }
 </script>
 <template>
@@ -19,9 +25,6 @@ function doPreset() {
         <TeamForm v-model="teamValue" />
       </div>
     </div>
-    <div class="row">
-      <pre>{{ teamValue }}</pre>
-    </div>
-    <button @click="doPreset()" class="btn btn-primary">TEST</button>
+    <button @click="create()" class="btn btn-primary">Sukurti</button>
   </div>
 </template>
