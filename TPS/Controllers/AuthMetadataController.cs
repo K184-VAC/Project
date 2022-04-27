@@ -23,7 +23,7 @@ public class AuthMetadataController : ControllerBase
     }
 
     [HttpGet]
-    public AuthMetadata Index() => new AuthMetadata(_configuration["AzureAd:Audiance"]);
+    public AuthMetadata Index() => new AuthMetadata(_configuration["AzureAd:Audience"]);
 
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
