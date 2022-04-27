@@ -1,6 +1,12 @@
-import { createVuexModule } from "vuex-typed-modules";
+// TODO: Rewrite me
+
+import { InjectionKey } from "vue";
+import { createLogger, createStore, Store, useStore } from "vuex";
+
 import { login } from "../../http/LoginController";
 import { GetMsalState, WatchMsalState } from "../../msal";
+
+const debug = process.env.NODE_ENV !== "production";
 
 interface AuthModuleState {
   isReady: boolean;
@@ -12,19 +18,18 @@ interface AuthModuleState {
   onReady: (() => void)[];
 }
 
-const defaultState: AuthModuleState = {
-  isReady: false,
-  isLoggedIn: false,
-  accessToken: null,
-  idToken: null,
-  email: null,
-  displayName: null,
-  onReady: [],
-};
+export const authStoreKey: InjectionKey<Store<AuthModuleState>> = Symbol();
 
-export const [authModule, useAuthModule] = createVuexModule({
-  name: "authModule",
-  state: defaultState,
+export const authStore = createStore<AuthModuleState>({
+  state: {
+    isReady: false,
+    isLoggedIn: false,
+    accessToken: null,
+    idToken: null,
+    email: null,
+    displayName: null,
+    onReady: [],
+  },
   actions: {
     initialize({ commit }) {
       WatchMsalState(async () => {
@@ -57,4 +62,9 @@ export const [authModule, useAuthModule] = createVuexModule({
       state.onReady.push(callback);
     },
   },
+  plugins: debug ? [createLogger()] : [],
 });
+
+export function useAuthStore() {
+  return useStore(authStoreKey);
+}

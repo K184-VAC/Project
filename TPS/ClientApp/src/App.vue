@@ -1,14 +1,9 @@
 <script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-
-import { useAuthModule } from "./store/modules/auth";
-
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import NavBar from "./components/NavBar.vue";
+import { useAuthStore } from "./store/modules/auth";
 
-const authModule = useAuthModule();
-
-authModule.actions.initialize();
+const authStore = useAuthStore();
+authStore.dispatch("initialize");
 </script>
 
 <template>

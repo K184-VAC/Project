@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import { Collapse } from "bootstrap";
-import { onMounted, ref } from "vue";
-import { useAuthModule } from "../store/modules/auth";
+import { onMounted, ref, toRefs } from "vue";
 import { LoginMsal, LogoutMsal } from "../msal";
+import { useAuthStore } from "../store/modules/auth";
 
 const navBarRef = ref<HTMLElement | null>(null);
 const collapse = ref<Collapse | null>(null);
 
-const {
-  state: { isLoggedIn, displayName },
-} = useAuthModule();
+const authStore = useAuthStore();
+const { isLoggedIn, displayName } = toRefs(authStore.state);
 
 onMounted(() => {
   navBarRef.value;
