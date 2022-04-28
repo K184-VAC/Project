@@ -30,5 +30,8 @@ namespace TPS.Data
         public DbSet<Team> Teams => Set<Team>(); 
         public DbSet<TeamMember> TeamMembers => Set<TeamMember>();
         public DbSet<User> Users => Set<User>();
+        public DbSet<Activity> Activities => Set<Activity>();
+        public DbSet<PlannedActivity> PlannedActivities => Set<PlannedActivity>();
+        public DbSet<SchedulingSpreadsheet> SchedulingSpreadsheets => Set<SchedulingSpreadsheet>();
     }
 }
