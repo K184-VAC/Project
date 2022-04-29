@@ -140,8 +140,8 @@ const weekDayEvents = computed(() =>
           :style="style"
         ></div>
         <div
-          v-for="(event, i) in weekDayEvents[i]"
-          :key="i"
+          v-for="(event, x) in weekDayEvents[i]"
+          :key="x"
           class="event"
           :style="event.style"
         >
